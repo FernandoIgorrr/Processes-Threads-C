@@ -2,6 +2,72 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h>
+
+#define MAX_THREADS 100
+
+typedef struct {
+    double** matriz1;
+    double** matriz2;
+    double** resultado;
+    int n1;
+    int m1;
+    int thread_id;
+    int num_threads;
+} ThreadArgs;
+
+// Função que executa cada thread
+void* _multiplicacaoComThreads(void* arg) {
+    ThreadArgs* args = (ThreadArgs*)arg;
+
+    int linhasPorThread = args->n1 / args->num_threads;
+    int inicio = args->thread_id * linhasPorThread;
+    int fim = (args->thread_id == args->num_threads - 1) ? args->n1 : (inicio + linhasPorThread);
+
+    for (int i = inicio; i < fim; i++) {
+        for (int j = 0; j < args->m1; j++) {
+            args->resultado[i][j] = 0;
+            for (int k = 0; k < args->m1; k++) {
+                args->resultado[i][j] += args->matriz1[i][k] * args->matriz2[k][j];
+            }
+        }
+    }
+
+    pthread_exit(NULL);
+}
+
+// Função para multiplicar matrizes usando threads
+double** multiplicacaoComThreads(double** matriz1, double** matriz2, int n1, int m1, int P) {
+    
+    // Aloqca memória para a matriz de resultado
+    int** resultado = (int**)malloc(n1 * sizeof(int*));
+    for (int i = 0; i < n1; i++) {
+        resultado[i] = (int*)malloc(m1 * sizeof(int));
+    }
+
+    // Cria  as threads
+    pthread_t threads[MAX_THREADS];
+    ThreadArgs thread_args[MAX_THREADS];
+
+    for (int i = 0; i < P; i++) {
+        thread_args[i].matriz1 = matriz1;
+        thread_args[i].matriz2 = matriz2;
+        thread_args[i].resultado = resultado;
+        thread_args[i].n1 = n1;
+        thread_args[i].m1 = m1;
+        thread_args[i].thread_id = i;
+        thread_args[i].num_threads = P;
+
+        pthread_create(&threads[i], NULL, _multiplicacaoComThreads, &thread_args[i]);
+    }
+
+    // Aguarde as threads terminarem
+    for (int i = 0; i < P; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+    return resultado;
+}
 
 double** multiplicacaoConvencional(double** M1, int n1, int m1, double** M2, int n2, int m2){
 
