@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/figor/Documentos/Projetos/SO/Processes&Threads",
-      "program": "/home/figor/Documentos/Projetos/SO/Processes&Threads/build/Debug/outDebug",
+      "cwd": "/home/figor/Documentos/Projetos/SO/Processes-Threads-C",
+      "program": "/home/figor/Documentos/Projetos/SO/Processes-Threads-C/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
