@@ -7,6 +7,8 @@ double** criarMatrizAleatoria(int n1, int m1);
 
 void salvarMatrizEmArquivo(char* nomeDoArquivo, double** matrix, int n1, int m1);
 
+void salvarMatrizEmArquivoComTempo(char* nomeDoArquivo, double** matrix, int n1, int m1, double tempo);
+
 double** lerMatrizDeArquivo(char* nomeDoArquivo);
 
 char* toString(double** matriz, int n1, int m1);

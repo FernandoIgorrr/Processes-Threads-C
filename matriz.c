@@ -75,6 +75,33 @@ void salvarMatrizEmArquivo(char* nomeDoArquivo, double** matriz, int n1, int m1)
 	fclose(arquivo);
 }
 
+void salvarMatrizEmArquivoComTempo(char* nomeDoArquivo, double** matriz, int n1, int m1, double tempo){
+
+	//Abre o arquivo para escrita
+    FILE* arquivo = fopen(nomeDoArquivo, "w");
+
+    // Verifica se o arquivo foi aberto com sucesso
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    // Escreve o tempo que durou a multiplicação
+    fprintf(arquivo, "%lf\n", tempo);
+
+	// Escreve as dimensões da matriz no arquivo
+    fprintf(arquivo, "%d\t%d\n", n1, m1);
+
+	// Escreve os elementos da matriz no arquivo
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < m1; j++) {
+            fprintf(arquivo, "%lf\t", matriz[i][j]);
+        }
+        fprintf(arquivo, "\n");
+    }
+	fclose(arquivo);
+}
+
 double** lerMatrizDeArquivo(char* nomeDoArquivo){
     
     int n1, m1;
