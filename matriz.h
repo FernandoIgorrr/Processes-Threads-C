@@ -1,6 +1,10 @@
 #ifndef COMMAND_H_INCLUDED
 #define COMMAND_H_INCLUDED
 
+void* _multiplicacaoComProcessos(void* arg);
+
+double** multiplicacaoComProcessos(double** matriz1, double** matriz2, int linhas, int colunas, int elementosPorProcesso);
+
 void* _multiplicacaoComThreads(void* arg);
 
 double** multiplicacaoComThreads(double** matriz1, double** matriz2, int linhas, int colunas, int elementosPorThread);

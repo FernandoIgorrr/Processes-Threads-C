@@ -51,10 +51,10 @@ int main(int argc, char *argv[]){
     // printf("Colunas: %d\n", colunas);
 
     
-    printf("Matriz resultado => \n%s\n",toString(M3,linhas,colunas));
+    //printf("Matriz resultado => \n%s\n",toString(M3,linhas,colunas));
     
 
-    salvarMatrizEmArquivo("M3tt",M3,linhas,colunas);
+    salvarMatrizEmArquivo("M3t",M3,linhas,colunas);
 
     return 0; 
 }

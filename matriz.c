@@ -22,7 +22,59 @@ typedef struct {
     int linha_fim;
     int coluna_fim;
     double tempo;
+} ProcessesArgs;
+
+typedef struct {
+    double** matriz1;
+    double** matriz2;
+    double** resultado;
+    //int linhas;
+    int colunas;
+    //int id_thread;
+    int elementosPorThread;
+   // int num_threads;
+    int linha_inicio;
+    int coluna_inicio;
+    int linha_fim;
+    int coluna_fim;
+    double tempo;
 } ThreadArgs;
+
+
+void* _multiplicacaoComProcessos(void* arg){
+    
+}
+
+double** multiplicacaoComProcessos(double** matriz1, double** matriz2, int linhas, int colunas, int elementosPorProcesso){
+
+    double** resultado = (double**)malloc(linhas * sizeof(double*));
+    for (int i = 0; i < linhas; i++) {
+        resultado[i] = (double*)malloc(colunas * sizeof(double));
+    }
+
+    int numProcessos = ceil((linhas*colunas) / elementosPorProcesso);
+
+    if(((linhas*colunas) % elementosPorProcesso) != 0){
+        numProcessos++;
+    }
+
+    int inicio = 0;
+
+    for (int i = 0; i < numProcessos; i++) {
+
+        pid_t pid = fork();
+
+        if (pid == 0) {
+            multiplicarParteMatriz(matrizA, matrizB, resultado, inicio, fim);
+            exit(0);
+        } else if (pid < 0) {
+            perror("Erro na criação do processo filho");
+            exit(1);
+        }
+
+        inicio = fim;
+    }
+}
 
 // Função que executa cada thread
 void* _multiplicacaoComThreads(void* arg) {
@@ -123,7 +175,7 @@ double** multiplicacaoComThreads(double** matriz1, double** matriz2, int linhas,
         char texto[100] ;
         sprintf(str, "%d", i);
         snprintf(texto, sizeof(texto), "thread_%s", str);
-        salvarMatrizEmArquivoComTempo(texto,resultado,linhas,colunas,thread_args[i].tempo);
+        salvarMatrizEmArquivoComTempo(texto,thread_args[i].resultado,linhas,colunas,thread_args[i].tempo);
         //printf("Tempo da thread %d: %lf segundos\n", i, thread_args[i].tempo);
     }
 
