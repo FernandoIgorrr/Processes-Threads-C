@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
     int colunas     = lerLinhasColunas(nome2)[1];
 
     if(P > linhas*colunas){
-        printf("O número de elementos por thread é maior do que o número de elementos total da matriz resultado!\n");
+        printf("O número de elementos por processo é maior do que o número de elementos total da matriz resultado!\n");
         return 1;
     }
 
@@ -27,33 +27,12 @@ int main(int argc, char *argv[]){
     double** M2;
     double** M3;
 
-
-
     M1 = lerMatrizDeArquivo(nome1);
     M2 = lerMatrizDeArquivo(nome2);
 
-    M3 = multiplicacaoComThreads(M1,M2,linhas,colunas,P);
+    M3 = multiplicacaoComProcessos(M1,M2,linhas,colunas,P);
 
+    salvarMatrizEmArquivo("M3p",M3,linhas,colunas);
 
-    // for(int i = 0;i < linhas;i++){
-    //     free(M1[i]);
-    // }
-    // for(int i = 0;i < linhasM2;i++){
-    //     free(M2[i]);
-    // }
-
-    // free(M1);
-    // free(M2);
-    
-
-    // printf("Linhas: %d\n", linhas);
-    // printf("Colunas: %d\n", colunas);
-
-    
-    //printf("Matriz resultado => \n%s\n",toString(M3,linhas,colunas));
-    
-
-    //salvarMatrizEmArquivo("M3t",M3,linhas,colunas);
-
-    return 0; 
+    return 0;
 }

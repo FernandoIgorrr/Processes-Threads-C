@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "matriz.h"
+#include <string.h>
 
 int main(int argc, char *argv[]){
 
@@ -40,15 +41,21 @@ int main(int argc, char *argv[]){
     fim = clock();
 
     tempoDecorrido = (double)(fim - inicio) / CLOCKS_PER_SEC*1000;
-    printf("Multiplicação de matrizes convencional \n");
+    //printf("Multiplicação de matrizes convencional \n");
 
-    printf("=================================================\n");
+   // printf("=================================================\n");
 
-    printf("Tempo de execução: %.4lf milissegundos [ms]\n",tempoDecorrido);
+    //printf("Tempo de execução: %.4lf milissegundos [ms]\n",tempoDecorrido);
+    printf("%lf\n",tempoDecorrido);
 
-    printf("=================================================\n");
+    //printf("=================================================\n");
+    char M3name[50],str[20];
+    strcat(M3name,"sequencial/M3s_");
+    sprintf(str, "[ %d | %d ]",linhasM1,colunasM2);
+    strcat(M3name,str);
 
-    salvarMatrizEmArquivoComTempo("M3s",M3,linhasM1,colunasM2,tempoDecorrido);
+
+    salvarMatrizEmArquivoComTempo(M3name,M3,linhasM1,colunasM2,tempoDecorrido);
 
             // TESTES PARA VER AS MATRIZES //
 
