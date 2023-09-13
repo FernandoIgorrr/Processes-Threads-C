@@ -4,26 +4,31 @@
 #include "matriz.h"
 
 
-int main(){
+int main(int argc, char *argv[]){
 
+    if (argc != 5) {
+        printf("Digite exatamente 4 números inteiros iguais ou maiores que 2! \n");
+        return 1;
+    }
+
+    
     // Inicializa uma semente aleatória com o tempo atual
     srand(time(NULL));
 
-    int n1, m1, n2, m2;
-	
-    setbuf(stdin, NULL);
-    printf("Digite 4 números inteiros representando as linhas e colunas de duas matrizes \n n1 m1 n2 m2: ");
-    scanf("%d %d %d %d",&n1,&m1,&n2,&m2);
+    int linhaM1  = atoi(argv[1]);
+    int colunaM1 = atoi(argv[2]);
+    int linhaM2  = atoi(argv[3]);
+    int colunaM2 = atoi(argv[4]);
 
-    double** M1 = criarMatrizAleatoria(n1, m1);
-    double** M2 = criarMatrizAleatoria(n2, m2);
+    double** M1 = criarMatrizAleatoria(linhaM1, colunaM1);
+    double** M2 = criarMatrizAleatoria(linhaM2, colunaM2);
 
-    salvarMatrizEmArquivo("M1",M1,n1,m1);
-    salvarMatrizEmArquivo("M2",M2,n2,m2);
+    salvarMatrizEmArquivo("M1",M1,linhaM1,colunaM1);
+    salvarMatrizEmArquivo("M2",M2,linhaM2,colunaM2);
 
-    for (int i = 0; i < n1; i++) {
+    for (int i = 0; i < linhaM1; i++) {
         free(M1[i]);
-    }for (int i = 0; i < n2; i++) {
+    }for (int i = 0; i < linhaM2; i++) {
         free(M2[i]);
     }
 

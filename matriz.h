@@ -3,17 +3,19 @@
 
 void* _multiplicacaoComThreads(void* arg);
 
-double** multiplicacaoComThreads(double** matriz1, double** matriz2, int n1, int m1, int P);
+double** multiplicacaoComThreads(double** matriz1, double** matriz2, int linhas, int colunas, int elementosPorThread);
 
-double** multiplicacaoConvencional(double** M1, int n1, int m1, double** M2, int n2, int m2);
+double** multiplicacaoConvencional(double** colunas, int linhasM1, int colunasM1, double** M2, int linhasM2, int colunasM2);
 
-double** criarMatrizAleatoria(int n1, int m1);
+double** criarMatrizAleatoria(int linhas, int colunas);
 
-void salvarMatrizEmArquivo(char* nomeDoArquivo, double** matrix, int n1, int m1);
+void salvarMatrizEmArquivo(char* nomeDoArquivo, double** matrix, int linhas, int colunas);
 
-void salvarMatrizEmArquivoComTempo(char* nomeDoArquivo, double** matrix, int n1, int m1, double tempo);
+void salvarMatrizEmArquivoComTempo(char* nomeDoArquivo, double** matrix, int linhas, int colunas, double tempo);
 
 double** lerMatrizDeArquivo(char* nomeDoArquivo);
 
-char* toString(double** matriz, int n1, int m1);
+int* lerLinhasColunas(char* nomeDoArquivo);
+
+char* toString(double** matriz, int linhas, int colunas);
 #endif
