@@ -97,10 +97,9 @@ double** multiplicacaoComProcessos(double** M1, double** M2, int linhas, int col
         _multiplicacaoComProcessos(M1, M2, resultado, linhaParaIniciar, colunaParaIniciar, linhaParaFinalizar, colunaParaFinalizar, elementosPorProcesso, colunas);
         double tempoFim = medirTempo();
 
-
         char str[100] ;
         char texto[100] ;
-        sprintf(str, "%d_[ %d | %d ]", i,linhas,colunas);
+        sprintf(str, "%d_[%d_%d]", i,linhas,colunas);
         snprintf(texto, sizeof(texto), "processes/processo_%s", str);
         salvarMatrizEmArquivoComTempo(texto,resultado,linhas,colunas,(tempoFim - tempoInicio)/1000000);
 
@@ -115,8 +114,6 @@ double** multiplicacaoComProcessos(double** M1, double** M2, int linhas, int col
             perror("Erro na criação do processo filho");
             exit(1);
         }
-
-        
     }
 
     for (int i = 0; i < numProcessos; i++) {
@@ -133,8 +130,9 @@ void* _multiplicacaoComThreads(void* arg) {
     
     ThreadArgs* args = (ThreadArgs*)arg;
     
-    clock_t inicioTempo = clock();
+    //clock_t inicioTempo = clock();
     //printf("Thread: [ %d ] ([ %d | %d ]) => \n",args->id_thread,args->linha_inicio,args->coluna_inicio);
+    double tempoInicio = medirTempo();
 
     for (int count = 0,i = args->linha_inicio; i < args->linha_fim + 1; i++) {  
        for(int j = ((i > args->linha_inicio) ? 0 : args->coluna_inicio); (j < args->coluna_fim + 1) || (count < args->elementosPorThread)  ; j++,count++){
@@ -148,9 +146,12 @@ void* _multiplicacaoComThreads(void* arg) {
             }
         }
     }
+    double tempoFim = medirTempo();
+    
+    args->tempo = (tempoFim - tempoInicio)/1000000;
 
-    clock_t fimTempo = clock();
-    args->tempo = (double)(fimTempo - inicioTempo) / CLOCKS_PER_SEC*1000;
+    //clock_t fimTempo = clock();
+    //args->tempo = (double)(fimTempo - inicioTempo) / CLOCKS_PER_SEC*1000;
     // printf("THREAD:  %d  :====>\n",args->id_thread);
     // printf("%s\n",toString(args->resultado,args->linhas,args->colunas));
     // printf("===================================================\n");
@@ -222,11 +223,13 @@ double** multiplicacaoComThreads(double** M1, double** M2, int linhas, int colun
     double tempos[num_threads];
     // Aguarde as threads terminarem
     for (int i = 0; i < num_threads; i++) {
+        
         pthread_join(threads[i], NULL);
+        
         char str[100] ;
         char texto[100] ;
         sprintf(str, "%d", i);
-        snprintf(texto, sizeof(texto), "threads/thread_%s_[ %d | %d ]", str,linhas,colunas);
+        snprintf(texto, sizeof(texto), "threads/thread_%s_[%d_%d]", str,linhas,colunas);
         salvarMatrizEmArquivoComTempo(texto,thread_args[i].resultado,linhas,colunas,thread_args[i].tempo);
         tempos[i] = thread_args[i].tempo;
         //printf("Tempo da thread %d: %lf segundos\n", i, thread_args[i].tempo);
@@ -356,7 +359,7 @@ void salvarTemposEmArquivo(char* diretorio, char* nomeDoArquivo, double* tempos,
     strcat(name,nomeDoArquivo);
 
     char str[50] ;
-    sprintf(str, "_[ %d | %d ]", linhas, colunas);
+    sprintf(str, "_[%d_%d]", linhas, colunas);
     strcat(name,str);
 
     //printf("\n\n%s\n\n\n",name);
@@ -368,7 +371,7 @@ void salvarTemposEmArquivo(char* diretorio, char* nomeDoArquivo, double* tempos,
         printf("Erro ao abrir o arquivo para escrita.\n");
         return;
     }
-    fprintf(arquivo, "%s[ %d | %d ],\n", nomeDoArquivo, linhas,colunas);
+    fprintf(arquivo, "%s[%d_%d],\n", nomeDoArquivo, linhas,colunas);
 	// Escreve os elementos da matriz no arquivo
 
     for (int i = 0; i < num_tempos; i++) {
@@ -385,7 +388,7 @@ void salvarTempoEmArquivo(char* diretorio, char* nomeDoArquivo, double tempo, in
     strcat(name,nomeDoArquivo);
 
     char str[20] ;
-    sprintf(str, "_[ %d | %d ]", linhas, colunas);
+    sprintf(str, "_[%d_%d]", linhas, colunas);
     strcat(name,str);
 
     // Abre o arquivo no modo de anexação ("a")

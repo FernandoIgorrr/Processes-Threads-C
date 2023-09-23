@@ -5,8 +5,13 @@
 
 int main(int argc, char *argv[]){
 
-    if (argc < 4) {
-        printf("Uso: %s string1 string2\n", argv[0]);
+    if (argc != 4) {
+        printf("Uso: %s string1 string2\n %d\n\n", argv[0],argc);
+
+
+        for(int i = 0; i < argc;i++){
+            printf("-- %s\n",argv[i]);
+        }
         return 1;
     }
 
